@@ -2,8 +2,6 @@ sudo: false
 language: go
 go:
   - 1.4.1
-os:
-  - osx
 before_install:
   - bash mecab_install.sh
   - go get github.com/axw/gocov/gocov
@@ -12,3 +10,6 @@ before_install:
 script:
   - go test -v -covermode=count -coverprofile=coverage.out ./...
   - goveralls -coverprofile=coverage.out -service travis-ci
+os:
+  - linux
+  - osx
