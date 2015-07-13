@@ -23,3 +23,6 @@ sudo ldconfig
  
 cd $base_dir
 rm -rf mecab-0.996 mecab-ipadic-2.7.0-20070801
+
+apt-get update
+apt-get install libmecab-dev -y
