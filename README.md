@@ -13,6 +13,16 @@ MeCab binding for Go.
 
 ```
 go get github.com/yukihir0/mecab-go
+cd cmd/mg
+go install
+```
+## Generate mecab_gen.go
+
+mecab_gen.go is a generated file that is setuped cflags and ldflag for cgo.
+It is a goal that can support multiple operating systems.
+
+```
+go generate
 ```
 
 ## How to use

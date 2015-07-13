@@ -1,15 +1,16 @@
 sudo: false
 language: go
 go:
-  - 1.4.1
+  - 1.4
+os:
+  - linux
 before_install:
   - bash mecab_install.sh
+  - bash mecab_generate.sh
+  - rm -rf cmd
   - go get github.com/axw/gocov/gocov
   - go get github.com/mattn/goveralls
   - if ! go get code.google.com/p/go.tools/cmd/cover; then go get golang.org/x/tools/cmd/cover; fi
 script:
   - go test -v -covermode=count -coverprofile=coverage.out ./...
   - goveralls -coverprofile=coverage.out -service travis-ci
-os:
-  - linux
-  - osx
