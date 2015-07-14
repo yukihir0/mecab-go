@@ -1,6 +1,6 @@
 # mecab-go
 
-MeCab binding for Go.
+MeCab binding for Go. [![Build Status](https://travis-ci.org/yukihir0/mecab-go.svg?branch=master)](https://travis-ci.org/yukihir0/mecab-go)
 
 ## Original
 - http://qiita.com/rerofumi/items/2bb1e49b20f2175ecaac
