@@ -2,7 +2,7 @@
 
 base_dir=`pwd`
  
-wget https://mecab.googlecode.com/files/mecab-0.996.tar.gz
+wget https://googledrive.com/host/0B4y35FiV1wh7cENtOXlicTFaRUE -O mecab-0.996.tar.gz
 tar zxfv mecab-0.996.tar.gz
 cd mecab-0.996
 ./configure --enable-utf8-only
@@ -13,7 +13,7 @@ sudo ldconfig
  
 cd $base_dir
  
-wget https://mecab.googlecode.com/files/mecab-ipadic-2.7.0-20070801.tar.gz
+wget https://googledrive.com/host/0B4y35FiV1wh7MWVlSDBCSXZMTXM -O mecab-ipadic-2.7.0-20070801.tar.gz
 tar zxfv mecab-ipadic-2.7.0-20070801.tar.gz
 cd mecab-ipadic-2.7.0-20070801
 ./configure --with-charset=utf8
@@ -23,6 +23,3 @@ sudo ldconfig
  
 cd $base_dir
 rm -rf mecab-0.996 mecab-ipadic-2.7.0-20070801
-
-sudo apt-get update -qq
-sudo apt-get install libmecab-dev -qq
