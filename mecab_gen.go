@@ -12,6 +12,13 @@ import (
 	"strings"
 )
 
+var args Args
+
+// Initialize initalize Mecab Args
+func Initialize(a Args) {
+	args = a
+}
+
 // Parse returns MeCab parse result.
 func Parse(sentence string) ([]ParseResult, error) {
 	result := []ParseResult{}

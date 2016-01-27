@@ -29,8 +29,13 @@ go generate
 
 ```
 input := "すもももももももものうち"
-result, err := mecab.Parse(input)
 
+// option
+args := mecab.NewArgs()
+args.DicDir = "/usr/local/Cellar/mecab/0.996/lib/mecab/dic/mecab-ipadic-neologd"
+mecab.Initialize(args)
+
+result, err := mecab.Parse(input)
 if err != nil {
 	panic(err)
 }
