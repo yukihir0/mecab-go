@@ -22,7 +22,7 @@ func Initialize(a Args) {
 // Parse returns MeCab parse result.
 func Parse(sentence string) ([]ParseResult, error) {
 	result := []ParseResult{}
-	
+
 	model := C.mecab_model_new2(C.CString(""))
 	if model == nil {
 		return result, newMecabError("mecab model is not created.")
