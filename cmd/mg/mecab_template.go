@@ -19,67 +19,47 @@ import (
 	"strings"
 )
 
-// ParseResult represents MeCab parse result.
-type ParseResult struct {
-	Surface string // 表層形
-	Feature string // 形態素
-	Pos     string // 品詞
-	Pos1    string // 品詞細分類1
-	Pos2    string // 品詞細分類2
-	Pos3    string // 品詞細分類3
-	Cform   string // 活用形
-	Ctype   string // 活用型
-	Base    string // 原形
-	Read    string // 読み
-	Pron    string // 発音
-}
-
-type mecabError struct {
-	message string
-}
-
-func (err mecabError) Error() (s string) {
-	return err.message
-}
-
 // Parse returns MeCab parse result.
-func Parse(sentence string) (r []ParseResult, err error) {
+func Parse(sentence string) ([]ParseResult, error) {
+	result := []ParseResult{}
+	
 	model := C.mecab_model_new2(C.CString(""))
 	if model == nil {
-		err = mecabError{"mecab model is not created."}
-		return
+		return result, newMecabError("mecab model is not created.")
 	}
-	mecab := C.mecab_model_new_tagger(model)
-	if mecab == nil {
-		err = mecabError{"mecab tagger is not created."}
-		return
+	tagger := C.mecab_model_new_tagger(model)
+	if tagger == nil {
+		return result, newMecabError("mecab tagger is not created.")
 	}
 	lattice := C.mecab_model_new_lattice(model)
 	if lattice == nil {
-		err = mecabError{"mecab lattice is not created."}
-		return
+		return result, newMecabError("mecab lattice is not created.")
 	}
 
+	defer func() {
+		C.mecab_destroy(tagger)
+		C.mecab_lattice_destroy(lattice)
+		C.mecab_model_destroy(model)
+	}()
+
 	C.mecab_lattice_set_sentence(lattice, C.CString(sentence))
-	C.mecab_parse_lattice(mecab, lattice)
+	C.mecab_parse_lattice(tagger, lattice)
 
 	lines := strings.Split(C.GoString(C.mecab_lattice_tostr(lattice)), "\n")
 	for _, l := range lines {
 		if strings.Index(l, "EOS") != 0 {
 			if len(l) > 1 {
-				r = append(r, split(l))
+				result = append(result, split(l))
 			}
 		}
 	}
 
-	C.mecab_destroy(mecab)
-	C.mecab_lattice_destroy(lattice)
-	C.mecab_model_destroy(model)
-
-	return
+	return result, nil
 }
 
-func split(line string) (r ParseResult) {
+func split(line string) ParseResult {
+	r := ParseResult{}
+
 	// 表層形\t形態素
 	l := strings.Split(line, "\t")
 	r.Surface = l[0]
@@ -99,7 +79,7 @@ func split(line string) (r ParseResult) {
 		r.Pron = feature[8]
 	}
 
-	return
+	return r
 }
 `
 
