@@ -30,7 +30,7 @@ func Initialize(a Args) {
 func Parse(sentence string) ([]ParseResult, error) {
 	result := []ParseResult{}
 
-	model := C.mecab_model_new2(C.CString(""))
+	model := C.mecab_model_new2(C.CString(args.Build()))
 	if model == nil {
 		return result, newMecabError("mecab model is not created.")
 	}
