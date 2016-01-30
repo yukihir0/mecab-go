@@ -2,7 +2,7 @@ package mecab
 
 import "strings"
 
-// Node represents MeCab node.
+// Node represents Mecab node.
 type Node struct {
 	Surface string // 表層形
 	Feature string // 形態素
