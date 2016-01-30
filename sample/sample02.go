@@ -11,7 +11,10 @@ func main() {
 
 	args := mecab.NewArgs()
 	args.DicDir = "/usr/local/Cellar/mecab/0.996/lib/mecab/dic/mecab-ipadic-neologd"
-	parser := mecab.NewParser(args)
+	parser, err := mecab.InitializeParser(args)
+	if err != nil {
+		panic(err)
+	}
 	defer parser.Release()
 
 	nodes, err := parser.Parse(input)

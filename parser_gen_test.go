@@ -6,7 +6,10 @@ import (
 
 func TestParserParse(t *testing.T) {
 	args := NewArgs()
-	parser := NewParser(args)
+	parser, err := InitializeParser(args)
+	if err != nil {
+		t.Error(err)
+	}
 	defer parser.Release()
 
 	input := "すもももももももものうち"
@@ -80,7 +83,10 @@ func TestParserParse(t *testing.T) {
 }
 func BenchmarkParserParse(b *testing.B) {
 	args := NewArgs()
-	parser := NewParser(args)
+	parser, err := InitializeParser(args)
+	if err != nil {
+		panic(err)
+	}
 	defer parser.Release()
 
 	input := "すもももももももものうち"

@@ -19,14 +19,23 @@ type Parser struct {
 	lattice *C.struct_mecab_lattice_t
 }
 
-// NewParser returns Mecab parser.
-func NewParser(a Args) Parser {
+// InitializeParser returns Mecab parser.
+func InitializeParser(a Args) (Parser, error) {
 	p := Parser{}
 	p.model = C.mecab_model_new2(C.CString(a.Build()))
+	if p.model == nil {
+		return p, newMecabError("mecab model is not created.")
+	}
 	p.tagger = C.mecab_model_new_tagger(p.model)
+	if p.tagger == nil {
+		return p, newMecabError("mecab tagger is not created.")
+	}
 	p.lattice = C.mecab_model_new_lattice(p.model)
+	if p.lattice == nil {
+		return p, newMecabError("mecab lattice is not created.")
+	}
 
-	return p
+	return p, nil
 }
 
 // Release release Mecab parser.
