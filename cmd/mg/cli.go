@@ -14,6 +14,7 @@ const (
 	ExitCodeParseError
 	ExitMecabConfigParseError
 	ExitMecabGenerateError
+	ExitParserGenerateError
 )
 
 type CLI struct {
@@ -45,6 +46,10 @@ func (c *CLI) Run(args []string) int {
 		return ExitMecabGenerateError
 	}
 
+	if err := GenerateParser(config); err != nil {
+		return ExitParserGenerateError
+	}
+
 	return ExitCodeOK
 }
 
@@ -60,6 +65,24 @@ func GenerateMecab(config MecabConfig) error {
 	}
 
 	if err := ioutil.WriteFile("mecab_gen.go", buf.Bytes(), 0644); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func GenerateParser(config MecabConfig) error {
+	t, err := template.ParseFiles("cmd/mg/parser_gen.tpl")
+	if err != nil {
+		return err
+	}
+
+	var buf bytes.Buffer
+	if err := t.Execute(&buf, config); err != nil {
+		return err
+	}
+
+	if err := ioutil.WriteFile("parser_gen.go", buf.Bytes(), 0644); err != nil {
 		return err
 	}
 

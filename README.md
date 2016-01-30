@@ -6,31 +6,29 @@ MeCab binding for Go.
 - http://qiita.com/rerofumi/items/2bb1e49b20f2175ecaac
 
 ## Environment
-- os: mac os 10.10(yosemite)
+- os: mac osx
 - mecab: install by homebrew
 
 ## Install
 
 ```
 go get github.com/yukihir0/mecab-go
-cd cmd/mg
-go install
 ```
-## Generate mecab_gen.go
 
-mecab_gen.go is a generated file that is setuped cflags and ldflag for cgo.  
+## Generate *_gen.go
+
+*_gen.go is a generated file that is setuped cflags and ldflag for cgo.  
 It is a goal that can support multiple operating systems.  
 
 ```
-go generate
+./generate.sh
 ```
 
-## How to use
+## How to use 1
 
 ```
 input := "すもももももももものうち"
 
-// option
 args := mecab.NewArgs()
 args.DicDir = "/usr/local/Cellar/mecab/0.996/lib/mecab/dic/mecab-ipadic-neologd"
 mecab.Initialize(args)
@@ -40,7 +38,27 @@ if err != nil {
 	panic(err)
 }
 
-for _, node := range nodes{
+for _, node := range nodes {
+	fmt.Println(node.Surface)
+}
+```
+
+## How to use 2
+
+```
+input := "すもももももももものうち"
+
+args := mecab.NewArgs()
+args.DicDir = "/usr/local/Cellar/mecab/0.996/lib/mecab/dic/mecab-ipadic-neologd"
+parser := mecab.NewParser(args)
+defer parser.Release()
+
+nodes, err := parser.Parse(input)
+if err != nil {
+	panic(err)
+}
+
+for _, node := range nodes {
 	fmt.Println(node.Surface)
 }
 ```
