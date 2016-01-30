@@ -6,7 +6,7 @@ import (
 
 func TestParse(t *testing.T) {
 	input := "すもももももももものうち"
-	result, err := Parse(input)
+	nodes, err := Parse(input)
 
 	// expected
 	surface := []string{"すもも", "も", "もも", "も", "もも", "の", "うち"}
@@ -32,45 +32,45 @@ func TestParse(t *testing.T) {
 		t.Fail()
 	}
 
-	for i, r := range result {
-		if r.Surface != surface[i] {
-			t.Errorf("expected %s, but got %s", surface[i], r.Surface)
+	for i, node := range nodes {
+		if node.Surface != surface[i] {
+			t.Errorf("expected %s, but got %s", surface[i], node.Surface)
 		}
 
-		if r.Feature != feature[i] {
-			t.Errorf("expected %s, but got %s", feature[i], r.Feature)
+		if node.Feature != feature[i] {
+			t.Errorf("expected %s, but got %s", feature[i], node.Feature)
 		}
 
-		if r.Pos != pos[i] {
-			t.Errorf("expected %s, but got %s", pos[i], r.Pos)
+		if node.Pos != pos[i] {
+			t.Errorf("expected %s, but got %s", pos[i], node.Pos)
 		}
 
-		if r.Pos1 != pos1[i] {
-			t.Errorf("expected %s, but got %s", pos1[i], r.Pos1)
+		if node.Pos1 != pos1[i] {
+			t.Errorf("expected %s, but got %s", pos1[i], node.Pos1)
 		}
 
-		if r.Pos2 != pos2[i] {
-			t.Errorf("expected %s, but got %s", pos2[i], r.Pos2)
+		if node.Pos2 != pos2[i] {
+			t.Errorf("expected %s, but got %s", pos2[i], node.Pos2)
 		}
 
-		if r.Cform != cform[i] {
-			t.Errorf("expected %s, but got %s", cform[i], r.Cform)
+		if node.Cform != cform[i] {
+			t.Errorf("expected %s, but got %s", cform[i], node.Cform)
 		}
 
-		if r.Ctype != ctype[i] {
-			t.Errorf("expected %s, but got %s", ctype[i], r.Ctype)
+		if node.Ctype != ctype[i] {
+			t.Errorf("expected %s, but got %s", ctype[i], node.Ctype)
 		}
 
-		if r.Base != base[i] {
-			t.Errorf("expected %s, but got %s", base[i], r.Base)
+		if node.Base != base[i] {
+			t.Errorf("expected %s, but got %s", base[i], node.Base)
 		}
 
-		if r.Read != read[i] {
-			t.Errorf("expected %s, but got %s", read[i], r.Read)
+		if node.Read != read[i] {
+			t.Errorf("expected %s, but got %s", read[i], node.Read)
 		}
 
-		if r.Pron != pron[i] {
-			t.Errorf("expected %s, but got %s", pron[i], r.Pron)
+		if node.Pron != pron[i] {
+			t.Errorf("expected %s, but got %s", pron[i], node.Pron)
 		}
 	}
 }

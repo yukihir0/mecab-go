@@ -35,13 +35,13 @@ args := mecab.NewArgs()
 args.DicDir = "/usr/local/Cellar/mecab/0.996/lib/mecab/dic/mecab-ipadic-neologd"
 mecab.Initialize(args)
 
-result, err := mecab.Parse(input)
+nodes, err := mecab.Parse(input)
 if err != nil {
 	panic(err)
 }
 
-for _, r := range result {
-	fmt.Println(r.Surface)
+for _, node := range nodes{
+	fmt.Println(node.Surface)
 }
 ```
 

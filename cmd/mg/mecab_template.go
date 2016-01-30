@@ -27,20 +27,20 @@ func Initialize(a Args) {
 }
 
 // Parse returns MeCab parse result.
-func Parse(sentence string) ([]ParseResult, error) {
-	result := []ParseResult{}
+func Parse(sentence string) ([]Node, error) {
+	nodes := []Node{}
 
 	model := C.mecab_model_new2(C.CString(args.Build()))
 	if model == nil {
-		return result, newMecabError("mecab model is not created.")
+		return nodes, newMecabError("mecab model is not created.")
 	}
 	tagger := C.mecab_model_new_tagger(model)
 	if tagger == nil {
-		return result, newMecabError("mecab tagger is not created.")
+		return nodes, newMecabError("mecab tagger is not created.")
 	}
 	lattice := C.mecab_model_new_lattice(model)
 	if lattice == nil {
-		return result, newMecabError("mecab lattice is not created.")
+		return nodes, newMecabError("mecab lattice is not created.")
 	}
 
 	defer func() {
@@ -53,40 +53,13 @@ func Parse(sentence string) ([]ParseResult, error) {
 	C.mecab_parse_lattice(tagger, lattice)
 
 	lines := strings.Split(C.GoString(C.mecab_lattice_tostr(lattice)), "\n")
-	for _, l := range lines {
-		if strings.Index(l, "EOS") != 0 {
-			if len(l) > 1 {
-				result = append(result, split(l))
-			}
+	for _, line := range lines {
+		if strings.Index(line, "EOS") != 0 && len(line) > 1 {
+			nodes = append(nodes, NewNode(line))
 		}
 	}
 
-	return result, nil
-}
-
-func split(line string) ParseResult {
-	r := ParseResult{}
-
-	// 表層形\t形態素
-	l := strings.Split(line, "\t")
-	r.Surface = l[0]
-	r.Feature = l[1]
-
-	// 品詞,品詞細分類1,品詞細分類2,品詞細分類3,活用形,活用型,原形,読み,発音
-	feature := strings.Split(r.Feature, ",")
-	r.Pos = feature[0]
-	r.Pos1 = feature[1]
-	r.Pos2 = feature[2]
-	r.Pos3 = feature[3]
-	r.Cform = feature[4]
-	r.Ctype = feature[5]
-	r.Base = feature[6]
-	if len(feature) > 7 {
-		r.Read = feature[7]
-		r.Pron = feature[8]
-	}
-
-	return r
+	return nodes, nil
 }
 `
 
