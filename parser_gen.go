@@ -36,7 +36,6 @@ func (p *Parser) Release() {
 	C.mecab_model_destroy(p.model)
 }
 
-
 // Parse returns Mecab parse result.
 func (p Parser) Parse(sentence string) ([]Node, error) {
 	C.mecab_lattice_set_sentence(p.lattice, C.CString(sentence))
