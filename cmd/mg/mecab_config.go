@@ -23,5 +23,6 @@ func (mc *MecabConfig) Parse() error {
 
 	mc.CFlags = strings.TrimSpace(string(cflags))
 	mc.LDFlags = strings.TrimSpace(string(ldflags))
+
 	return nil
 }

@@ -1,17 +1,19 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
+	"text/template"
 )
 
 const (
 	ExitCodeOK = iota
 	ExitCodeParseError
 	ExitMecabConfigParseError
-	ExitMecabTemplateParseError
-	ExitMecabSrcGenerateError
+	ExitMecabGenerateError
 )
 
 type CLI struct {
@@ -39,16 +41,27 @@ func (c *CLI) Run(args []string) int {
 		return ExitMecabConfigParseError
 	}
 
-	template := MecabTemplate{}
-	buf, err := template.Parse(config)
-	if err != nil {
-		return ExitMecabTemplateParseError
-	}
-
-	src := MecabSrc{}
-	if err := src.Generate(buf); err != nil {
-		return ExitMecabSrcGenerateError
+	if err := GenerateMecab(config); err != nil {
+		return ExitMecabGenerateError
 	}
 
 	return ExitCodeOK
+}
+
+func GenerateMecab(config MecabConfig) error {
+	t, err := template.ParseFiles("cmd/mg/mecab_template.tpl")
+	if err != nil {
+		return err
+	}
+
+	var buf bytes.Buffer
+	if err := t.Execute(&buf, config); err != nil {
+		return err
+	}
+
+	if err := ioutil.WriteFile("mecab_gen.go", buf.Bytes(), 0644); err != nil {
+		return err
+	}
+
+	return nil
 }
