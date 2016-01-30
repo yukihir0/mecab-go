@@ -8,6 +8,7 @@ before_install:
   - bash install.sh
   - bash generate.sh
   - rm -rf cmd
+  - rm -rf sample
   - go get golang.org/x/tools/cmd/goimports
   - go get golang.org/x/tools/cmd/vet
   - go get github.com/golang/lint/golint
