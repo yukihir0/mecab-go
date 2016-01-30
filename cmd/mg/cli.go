@@ -49,7 +49,7 @@ func (c *CLI) Run(args []string) int {
 }
 
 func GenerateMecab(config MecabConfig) error {
-	t, err := template.ParseFiles("cmd/mg/mecab_template.tpl")
+	t, err := template.ParseFiles("cmd/mg/mecab_gen.tpl")
 	if err != nil {
 		return err
 	}
