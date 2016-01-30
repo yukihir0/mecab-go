@@ -74,3 +74,13 @@ func TestParse(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkParse(b *testing.B) {
+	args := NewArgs()
+	Initialize(args)
+
+	input := "すもももももももものうち"
+	for n := 0; n < b.N; n++ {
+		Parse(input)
+	}
+}
